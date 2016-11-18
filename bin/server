@@ -1,17 +1,26 @@
 #!/usr/bin/env node
 
-var http = require('http'),
+var https = require('https'),
     port = 1337,
+    fs = require('fs'),
      url = 'http://localhost:' + port + '/';
 /* We can access nodejitsu enviroment variables from process.env */
 /* Note: the SUBDOMAIN variable will always be defined for a nodejitsu app */
+
+
+const options={
+	
+cert : fs.readFileSync('certificate.pem'),
+key : fs.readFileSync('key.pem')
+}
+
 if(process.env.SUBDOMAIN){
   url = 'http://' + process.env.SUBDOMAIN + '.jit.su/';
 }
 
-http.createServer(function (req, res) {
+https.createServer(options, (req, res) => {
   res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.write('hello, I know nodejitsu.');
+  res.write('hello, I know Gorbachevs Mother.');
   res.end();
 }).listen(port);
 
